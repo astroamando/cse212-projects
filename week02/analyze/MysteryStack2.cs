@@ -3,6 +3,17 @@
         return float.TryParse(text, out _);
     }
 
+    //The function adds numbers to a stack, operators 
+    //are used on the two most recent items in the stack 
+    // (op1 and op2 are popped from the stack). The
+    // operators act on the two most recent numbers.
+    //537+* = (3+7)*5 = 50
+    //62+53-/ = (6+2)/(5-3) = 4
+    // invalid case 1: fewer than two numbers (nothing for the operator to act on)
+    // invalid case 2: adding/subracting/multiplying by zero is useless because it
+    //  either does nothing or the result is zero
+    // invalid case 3: teh text includes invalid characters
+    // invalid case 4: there is no final answer (should be one number)
     public static float Run(string text) {
         var stack = new Stack<float>();
         foreach (var item in text.Split(' ')) {
