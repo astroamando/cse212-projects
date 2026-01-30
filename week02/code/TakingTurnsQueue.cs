@@ -44,7 +44,7 @@ public class TakingTurnsQueue
         {
             _people.Enqueue(person);
         }
-        else if (person.Turns >1)
+        else if (person.Turns > 1)
         {
             person.Turns -= 1;
             _people.Enqueue(person);
