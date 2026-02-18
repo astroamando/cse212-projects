@@ -40,7 +40,7 @@ public class Node
         if (value < Data)
             return Left != null && Left.Contains(value);
         else
-            return Right != null && Right. Contains(value);
+            return Right != null && Right.Contains(value);
     }
 
     public int GetHeight()
