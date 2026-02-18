@@ -20,7 +20,7 @@ public static class Recursion
             return 0;
         }
 
-        return 0 + SumSquaresRecursive(n - 1);
+        return (n * n) + SumSquaresRecursive(n - 1);
     
     }
 
@@ -119,7 +119,12 @@ public static class Recursion
             return cached;
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = 
+            CountWaysToClimb(s - 1, remember) + 
+            CountWaysToClimb(s - 2, remember) + 
+            CountWaysToClimb(s - 3, remember);
+        
+        remember[s] = ways;
         return ways;
     }
 
@@ -145,6 +150,13 @@ public static class Recursion
             results.Add(pattern);
             return;
         }
+
+        string prefix = pattern.Substring(0, starIndex);
+        string suffix = pattern.Substring(starIndex + 1);
+
+        WildcardBinary(prefix + "0" + suffix, results);
+        WildcardBinary(prefix + "1" + suffix, results);
+
     }
 
     /// <summary>
@@ -162,6 +174,8 @@ public static class Recursion
         // currPath.Add((1,2)); // Use this syntax to add to the current path
         currPath.Add((x,y));
 
+        // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
+
         if (maze.IsEnd(x,y))
         {
             results.Add(currPath.AsString());
@@ -169,8 +183,19 @@ public static class Recursion
             return;
         }
 
+        var moves = new (int dx, int dy)[] { (1, 0), (0, 1), (-1, 0), (0, -1) };
 
+        foreach (var (dx, dy) in moves)
+        {
+            int nx = x + dx;
+            int ny = y + dy;
 
-        // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
+            if (maze.IsValidMove(currPath, nx, ny))
+            {
+                SolveMaze(results, maze, nx, ny, currPath);
+            }
+        }
+
+        currPath.RemoveAt(currPath.Count - 1);
     }
 }
